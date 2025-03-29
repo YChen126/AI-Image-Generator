@@ -8,7 +8,7 @@
     <!-- linking font-awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
-<body>
+<body class="dark-theme">
     <div class="container">
         <!-- header -->
         <Header class="header">
@@ -69,9 +69,10 @@
                     </button>
                 </div>
                 <div class="gallery-grid">
-                    <div class="img-card">
+                    <div class="img-card error">
                         <div class="status-container">
                             <div class="spinner"></div>
+                            <i class="fa-solid fa-triangle-exclamation"></i>
                             <p class="status-text">Generating...</p>
                         </div>
                         <img src="test.png" alt="" class="result-img">
