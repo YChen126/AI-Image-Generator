@@ -240,8 +240,11 @@ body.dark-theme .container {
 .main-content .gallery-grid {
     display: grid;
     gap: 15px;
-    margin-top: 20px;
     grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+}
+
+.gallery-grid .img-card:has(.img-card) {
+    margin-top: 20px;
 }
 
 .gallery-grid .img-card {

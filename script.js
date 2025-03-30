@@ -5,6 +5,7 @@ const promptForm = document.querySelector(".prompt-form");
 const modelSelect = document.getElementById("model-select");
 const countSelect = document.getElementById("count-select");
 const ratioSelect = document.getElementById("ratio-select");
+const gridGallery = document.querySelector(".gallery-grid");
 
 const examplePrompts = [
     "A magic forest with glowing plants and fairy homes among giant mushrooms",
@@ -51,16 +52,31 @@ const toggleTheme = () => {
     themeToggle.querySelector("i").className = isDarkTheme? "fa-solid fa-sun" : "fa-solid fa-moon";
 }
 
+//create placeholder cards with loading spinners
+const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
+    gridGallery.innerHTML = "";
+
+    for (let i=0;i<imageCount;i++) {
+        gridGallery.innerHTML += `<div class="img-card loading" id="img-card-${i}" style="aspect-ratio: ${aspectRatio}">
+                        <div class="status-container">
+                            <div class="spinner"></div>
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p class="status-text">Generating...</p>
+                        </div>
+                    </div>`
+    }
+} 
+
 //handling the form submission
 const handleFormSubmit = (e) => {
-    e.preventdefault();
+    e.preventDefault();
 
     const selectModel = modelSelect.value;
     const imageCount = parseInt(countSelect.value) || 1;
     const aspectRatio = ratioSelect.value || "1/1";
     const promptText = promptInput.value.trim();
 
-    console.log(selectModel, imageCount, aspectRatio, promptText);
+    createImageCards(selectModel, imageCount, aspectRatio, promptText);
 }
 
 //fill the prompt input with random example
