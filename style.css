@@ -158,6 +158,9 @@ body.dark-theme .container {
     width: 35px;
     height: 35px;
     font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     color: #fff;
     background: var(--color-gradient);
@@ -230,6 +233,11 @@ body.dark-theme .container {
     font-weight: 500;
     color: #fff;
     background: var(--color-gradient);
+}
+
+.prompt-actions .generate-btn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
 }
 
 .prompt-actions .generate-btn:hover {
