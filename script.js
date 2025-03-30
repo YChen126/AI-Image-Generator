@@ -6,6 +6,7 @@ const modelSelect = document.getElementById("model-select");
 const countSelect = document.getElementById("count-select");
 const ratioSelect = document.getElementById("ratio-select");
 const gridGallery = document.querySelector(".gallery-grid");
+const API_KEY = ""; //Hugging face API KEY
 
 const examplePrompts = [
     "A magic forest with glowing plants and fairy homes among giant mushrooms",
@@ -52,6 +53,47 @@ const toggleTheme = () => {
     themeToggle.querySelector("i").className = isDarkTheme? "fa-solid fa-sun" : "fa-solid fa-moon";
 }
 
+//calculate width/height based on chosen ratio
+const getImageDimensions = (aspectRatio, baseSize = 512) => {
+    [width, height] = aspectRatio.split("/").map(Number);
+    const scaleFactor = baseSize/Math.sqrt(width*height);
+
+    let calculatedWidth = Math.round(width * scaleFactor);
+    let calculatedHeight = Math.round(height * scaleFactor);
+
+    //ensure dimensions are multiples of 16 (AI model requirements)
+    calculatedWidth = Math.floor(calculatedWidth / 16) * 16;
+    calculatedHeight = Math.floor(calculatedHeight / 16) * 16;
+
+    return {width : calculatedWidth, height : calculatedHeight};
+}
+
+const generateImages = async (selectModel, imageCount, aspectRatio, promptText) => {
+    MODEL_URL = `https://router.huggingface.co/hf-inference/models/${selectModel}`;
+    const {width, height} = getImageDimensions(aspectRatio);
+
+    const imagePromises = Array.from ({length: imageCount}, async(API_KEY, i) => {
+        try {
+            const response =await fetch (MODEL_URL, {
+                headers: {
+                    //have to go to the website and get the API_KEY to access model
+                    Authorization: `Bearer ${API_KEY}`,
+                    "Content-Type" : "application/json",
+                    "x-use-cache" : "false",
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    input : promptText,
+                    parameter: {width, height},
+                }),
+            })
+        }catch(error) {
+            console.log(error);
+        }
+    })
+
+}
+
 //create placeholder cards with loading spinners
 const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
     gridGallery.innerHTML = "";
@@ -65,6 +107,8 @@ const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
                         </div>
                     </div>`
     }
+
+    generateImages(selectModel, imageCount, aspectRatio, promptText);
 } 
 
 //handling the form submission
