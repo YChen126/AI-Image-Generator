@@ -68,11 +68,28 @@ const getImageDimensions = (aspectRatio, baseSize = 512) => {
     return {width : calculatedWidth, height : calculatedHeight};
 }
 
+//replace loading spinner with the actual image
+const updateImageCard = (imgIndex, imgURL) => {
+    const imgCard = document.getElementById(`img-card-${imgIndex}`);
+    if(!imgCard) return;
+
+    imgCard.classList.remove("loading");
+    imgCard.innerHTML = `<img src="${imgURL}" alt="" class="result-img">
+                    <div class="img-overlay">
+                        <a href="${imgURL}" class="img-download-btn" download="${Date.now()}.png">
+                            <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>`;
+}
+
+//send requests to Hugging Face API to create images
 const generateImages = async (selectModel, imageCount, aspectRatio, promptText) => {
     MODEL_URL = `https://router.huggingface.co/hf-inference/models/${selectModel}`;
     const {width, height} = getImageDimensions(aspectRatio);
 
+    //create an array of image generation promises
     const imagePromises = Array.from ({length: imageCount}, async(API_KEY, i) => {
+        //send request to the AI model API
         try {
             const response =await fetch (MODEL_URL, {
                 headers: {
@@ -86,12 +103,19 @@ const generateImages = async (selectModel, imageCount, aspectRatio, promptText) 
                     input : promptText,
                     parameter: {width, height},
                 }),
-            })
+            });
+
+            if (!response.ok) throw new Error((await response.json())?.error);
+
+            //convert response to an image URL and update the image card
+            const result = await response.blob();
+            updateImageCard(i, URL.createObjectURL(result));
         }catch(error) {
             console.log(error);
         }
-    })
+    });
 
+    await Promise.allSettled(imagePromises);
 }
 
 //create placeholder cards with loading spinners
