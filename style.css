@@ -361,3 +361,33 @@ body.dark-theme .container {
     color: var(--color-placeholder);
     text-align: center;
 }
+
+/* responsive media query code for small screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 18px;
+    }
+
+    .header .logo-wrapper .logo {
+        height: 50px;
+        width: 51px;
+        font-size: 1.25rem;
+    }
+
+    .header .logo-wrapper .logo {
+        font-size: 1.7rem;
+    }
+
+    .main-content .prompt-actioins {
+        grid-template-columns: 1fr;
+        margin-top: 10px;
+    }
+
+    .prompt-actions .generate-btn {
+        margin: 10px 0 0;
+    }
+
+    .gallery-grid .img-card .img-overlay {
+        opacity: 1;
+    }
+}
