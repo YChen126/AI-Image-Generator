@@ -129,7 +129,6 @@ body.dark-theme .container {
 .prompt-container .prompt-input {
     width: 100%;
     resize: vertical;
-    /* the horizontal padding can be widder*/
     padding: 16px 20px;
     line-height: 1.6;
     font-size: 1.05rem;

@@ -40,7 +40,7 @@ const examplePrompts = [
 //set the theme based on system preference or system default
 ( () => {
     const savedTheme = localStorage.getItem("theme");
-    const systemPreferDark = window.matchMedia("prefers-color-scheme : dark").matches;
+    const systemPreferDark = window.matchMedia("prefers-color-scheme: dark").matches;
 
     const isDarkTheme = savedTheme === "dark" || (!savedTheme && systemPreferDark);
     document.body.classList.toggle("dark-theme", isDarkTheme)
@@ -85,7 +85,7 @@ const updateImageCard = (imgIndex, imgURL) => {
 
 //send requests to Hugging Face API to create images
 const generateImages = async (selectModel, imageCount, aspectRatio, promptText) => {
-    MODEL_URL = `https://router.huggingface.co/hf-inference/models/${selectModel}`;
+    const MODEL_URL = `https://router.huggingface.co/hf-inference/models/${selectModel}`;
     const {width, height} = getImageDimensions(aspectRatio);
     generateBtn.setAttribute("disabled", "true");
 
@@ -137,9 +137,9 @@ const createImageCards = (selectModel, imageCount, aspectRatio, promptText) => {
                             <p class="status-text">Generating...</p>
                         </div>
                     </div>`
+                    generateImages(selectModel, imageCount, aspectRatio, promptText);
     }
 
-    generateImages(selectModel, imageCount, aspectRatio, promptText);
 } 
 
 //handling the form submission
